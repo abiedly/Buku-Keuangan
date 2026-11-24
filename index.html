@@ -20,7 +20,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 <style>
   :root {
-    --bg: #f2f0e9; --panel: rgba(251,250,246,.86); --panel-solid: #fbfaf6; --panel-2: #f4f2eb; --ink: #17211b; --muted: #6f746d; --line: rgba(23,33,27,.08);
+    --bg: #f2f0e9; --panel: rgba(251,250,246,.97); --panel-solid: #fbfaf6; --panel-2: #f4f2eb; --ink: #17211b; --muted: #6f746d; --line: rgba(23,33,27,.08);
     --green: #1f4a37; --green-2: #2e6b50; --green-soft: #e2ece4; --on-green: #f3f6ef; --on-green-muted: #b9cbbf;
     --lime: #c4ec93; --lime-ink: #1d3a12;
     --bad: #c0533c; --good: #2f7a3f;
@@ -33,7 +33,7 @@
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #0f1411; --panel: rgba(25,32,28,.82); --panel-solid: #19201c; --panel-2: #1e2621; --ink: #eef1ea; --muted: #98a39a; --line: rgba(255,255,255,.07);
+      --bg: #0f1411; --panel: rgba(25,32,28,.97); --panel-solid: #19201c; --panel-2: #1e2621; --ink: #eef1ea; --muted: #98a39a; --line: rgba(255,255,255,.07);
       --green: #24553f; --green-2: #3a7d5d; --green-soft: #1e2d24; --on-green: #f3f6ef; --on-green-muted: #a9c3b2;
       --lime: #a9db78; --lime-ink: #142a0b;
       --bad: #e3836c; --good: #8fd39b;
@@ -47,9 +47,11 @@
     padding-bottom: calc(104px + env(safe-area-inset-bottom)); overscroll-behavior-y: none; }
   body::before { content: ''; position: fixed; inset: -10% -10% -10% -10%; z-index: -2; pointer-events: none;
     background: radial-gradient(38% 30% at 88% 2%, var(--glow-a), transparent 70%), radial-gradient(45% 35% at -5% 32%, var(--glow-b), transparent 70%), radial-gradient(50% 40% at 105% 100%, var(--glow-c), transparent 70%), var(--bg); }
-  body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .05; mix-blend-mode: multiply;
+  body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .035;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-  @media (prefers-color-scheme: dark) { body::after { mix-blend-mode: screen; opacity: .035; } }
+  @media (prefers-color-scheme: dark) { body::after { opacity: .025; } }
+  html { overflow-x: hidden; }
+  :root { --spring: cubic-bezier(.34,1.56,.64,1); --spring-ms: 500ms; --spring-page: cubic-bezier(.25,1.15,.4,1); --spring-page-ms: 520ms; }
   .wrap { max-width: 480px; margin: 0 auto; padding: 0 16px; }
   .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
   .muted { color: var(--muted); }
@@ -70,14 +72,14 @@
   .greet h1 b { font-weight: 600; }
   .greet p { margin: 8px 0 0; color: var(--muted); font-size: 13px; max-width: 270px; }
   .top-actions { display: flex; gap: 8px; }
-  .round { width: 44px; height: 44px; border-radius: 50%; background: var(--panel); border: 1px solid var(--line); display: grid; place-items: center; box-shadow: var(--shadow); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); transition: transform .2s var(--ease); }
+  .round { width: 44px; height: 44px; border-radius: 50%; background: var(--panel); border: 1px solid var(--line); display: grid; place-items: center; box-shadow: var(--shadow); transition: transform var(--spring-ms) var(--spring); }
   .round:active { transform: scale(.92); }
   .spin svg { animation: spin 1s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .page-title { font-family: var(--serif); font-weight: 400; font-size: 32px; padding: calc(20px + env(safe-area-inset-top)) 0 16px; letter-spacing: -.015em; display: flex; justify-content: space-between; align-items: center; }
 
   /* cards */
-  .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow); -webkit-backdrop-filter: blur(18px) saturate(1.2); backdrop-filter: blur(18px) saturate(1.2); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow); }
   .card-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px; }
   .card-h h2 { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 10px; letter-spacing: -.01em; }
   .ic { width: 36px; height: 36px; border-radius: 12px; background: var(--green-soft); color: var(--green-2); display: grid; place-items: center; flex: none; }
@@ -111,7 +113,7 @@
   /* actions */
   .actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
   .act { display: flex; flex-direction: column; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--ink); }
-  .act .sq { width: 100%; aspect-ratio: 1 / 1; max-width: 64px; border-radius: 20px; background: var(--panel); border: 1px solid var(--line); display: grid; place-items: center; box-shadow: var(--shadow); color: var(--green); transition: transform .25s var(--ease), background .2s; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .act .sq { width: 100%; aspect-ratio: 1 / 1; max-width: 64px; border-radius: 20px; background: var(--panel); border: 1px solid var(--line); display: grid; place-items: center; box-shadow: var(--shadow); color: var(--green); transition: transform var(--spring-ms) var(--spring), background .2s; }
   @media (prefers-color-scheme: dark) { .act .sq { color: var(--lime); } }
   .act .sq svg.i { width: 22px; height: 22px; }
   .act:active .sq { transform: scale(.9); }
@@ -157,7 +159,7 @@
 
   /* analytics */
   .seg { position: relative; display: grid; grid-template-columns: 1fr 1fr; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 4px; margin-bottom: 14px; box-shadow: var(--shadow); }
-  .seg .knob { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 999px; background: var(--green); transition: transform .4s var(--ease); }
+  .seg .knob { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 999px; background: var(--green); transition: transform var(--spring-ms) var(--spring); }
   .seg[data-mode="masuk"] .knob { transform: translateX(100%); }
   .seg button { position: relative; padding: 10px 0; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--muted); transition: color .3s; }
   .seg button.on { color: var(--on-green); }
@@ -210,15 +212,15 @@
 
   /* nav */
   nav.tabbar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(12px + env(safe-area-inset-bottom)); width: min(448px, calc(100% - 24px)); background: var(--panel); border: 1px solid var(--line); border-radius: 28px; display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; padding: 8px 6px; box-shadow: 0 16px 40px -12px rgba(23,33,27,.28); z-index: 20; -webkit-backdrop-filter: blur(20px) saturate(1.4); backdrop-filter: blur(20px) saturate(1.4); }
-  nav.tabbar .ind { position: absolute; top: 6px; height: 46px; width: 64px; border-radius: 18px; background: var(--green-soft); transition: transform .45s var(--ease), opacity .3s; pointer-events: none; }
+  nav.tabbar .ind { position: absolute; top: 6px; height: 46px; width: 64px; border-radius: 18px; background: var(--green-soft); transition: transform var(--spring-ms) var(--spring), opacity .3s; pointer-events: none; }
   nav.tabbar button { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 600; color: var(--muted); padding: 5px 0; transition: color .3s; }
   nav.tabbar button.on { color: var(--ink); }
   nav.tabbar .fab { justify-self: center; width: 58px; height: 58px; border-radius: 50%; background: var(--green); color: var(--on-green); display: grid; place-items: center; margin-top: -32px; box-shadow: 0 12px 26px -8px rgba(31,74,55,.6); border: 4px solid var(--bg); transition: transform .3s var(--ease); padding: 0; }
   nav.tabbar .fab svg.i { width: 26px; height: 26px; stroke-width: 2.2; }
   nav.tabbar .fab:active { transform: scale(.9) rotate(90deg); }
 
-  .toast { position: fixed; left: 50%; bottom: calc(108px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0; background: var(--ink); color: var(--bg); padding: 11px 18px; border-radius: 999px; font-size: 13px; font-weight: 600; z-index: 30; max-width: 90%; text-align: center; transition: transform .4s var(--ease), opacity .3s; pointer-events: none; box-shadow: 0 10px 30px -10px rgba(0,0,0,.4); }
-  .toast.show { transform: translate(-50%, 0); opacity: 1; }
+  .toast { position: fixed; left: 50%; bottom: calc(108px + env(safe-area-inset-bottom)); transform: translate(-50%, 24px) scale(.92); opacity: 0; background: var(--ink); color: var(--bg); padding: 11px 18px; border-radius: 999px; font-size: 13px; font-weight: 600; z-index: 30; max-width: 90%; text-align: center; transition: transform var(--spring-ms) var(--spring), opacity .25s; pointer-events: none; box-shadow: 0 10px 30px -10px rgba(0,0,0,.4); }
+  .toast.show { transform: translate(-50%, 0) scale(1); opacity: 1; }
   .skel { display: inline-block; color: transparent !important; border-radius: 10px; background: linear-gradient(90deg, rgba(128,128,128,.10) 25%, rgba(128,128,128,.22) 50%, rgba(128,128,128,.10) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
   .hero .skel { background: linear-gradient(90deg, rgba(255,255,255,.08) 25%, rgba(255,255,255,.18) 50%, rgba(255,255,255,.08) 75%); background-size: 200% 100%; }
   @keyframes shimmer { to { background-position: -200% 0; } }
@@ -226,8 +228,8 @@
   /* sheet */
   .scrim { position: fixed; inset: 0; background: rgba(10,15,12,.4); z-index: 40; opacity: 0; pointer-events: none; transition: opacity .3s; }
   .scrim.on { opacity: 1; pointer-events: auto; }
-  .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: var(--panel-solid); border-radius: 28px 28px 0 0; padding: 10px 20px calc(24px + env(safe-area-inset-bottom)); transform: translateY(105%); visibility: hidden; transition: transform .45s var(--ease), visibility 0s linear .45s; max-width: 520px; margin: 0 auto; }
-  .sheet.on { transform: none; visibility: visible; transition: transform .45s var(--ease), visibility 0s; }
+  .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: var(--panel-solid); border-radius: 28px 28px 0 0; padding: 10px 20px calc(24px + env(safe-area-inset-bottom)); transform: translateY(105%); visibility: hidden; transition: transform var(--spring-page-ms) var(--spring-page), visibility 0s linear .5s; max-width: 520px; margin: 0 auto; }
+  .sheet.on { transform: none; visibility: visible; transition: transform var(--spring-page-ms) var(--spring-page), visibility 0s; }
   .sheet .grab { width: 40px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 14px; background: rgba(128,128,128,.3); }
   .sheet h3 { font-family: var(--serif); font-weight: 400; font-size: 24px; margin-bottom: 6px; }
   .kv { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
@@ -249,8 +251,6 @@
 
   /* motion */
   @media (prefers-reduced-motion: no-preference) {
-    .enter > * { animation: rise .6s var(--ease) both; animation-delay: calc(var(--i, 0) * 55ms); }
-    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
 
@@ -480,6 +480,7 @@
   <div class="kv"><span>Terakhir diperbarui</span><span id="setUpd">—</span></div>
   <div class="kv"><span>Link API</span><span id="setUrl">—</span></div>
   <div class="kv"><span>Target Dream Gear</span><span>Rp35.000.000</span></div>
+  <div class="kv"><span>Suara ketukan</span><button id="btnSound" style="color:var(--green-2);font-weight:700">Nyala</button></div>
   <button class="btn ghost" id="btnReload">Muat ulang data</button>
   <button class="btn" id="btnLogout" style="background:var(--bad)">Keluar dan hapus kode di perangkat ini</button>
 </div>
@@ -660,7 +661,33 @@ if (typeof module !== 'undefined') module.exports = { parseText: parseText, pars
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function setText(id, v) { var e = $(id); if (e) e.textContent = v; }
   function toast(msg) { var t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(function () { t.classList.remove('show'); }, 2600); }
-  function buzz() { try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) {} }
+  // getar: Android pakai vibrate; iPhone (iOS 18+) memakai sakelar tersembunyi yang memicu haptic
+  var hapEl = null;
+  function buzz() {
+    try {
+      if (navigator.vibrate) { navigator.vibrate(8); return; }
+      if (!hapEl) { hapEl = document.createElement('label'); var i = document.createElement('input'); i.type = 'checkbox'; i.setAttribute('switch', ''); hapEl.appendChild(i); hapEl.setAttribute('aria-hidden', 'true'); hapEl.style.cssText = 'position:fixed;left:-200px;top:0;width:1px;height:1px;opacity:0;pointer-events:none'; document.body.appendChild(hapEl); }
+      hapEl.click();
+    } catch (e) {}
+  }
+  // suara lembut, dibuat langsung oleh browser (tanpa file)
+  var soundOn = ls('bk_sound') !== '0', actx = null;
+  var SFX = { tap: [[1250, 0, .035, .05]], nav: [[880, 0, .05, .045], [1320, .03, .05, .03]], pop: [[520, 0, .07, .07], [880, .045, .08, .05]],
+    ok: [[784, 0, .09, .06], [1175, .08, .16, .06]], del: [[330, 0, .1, .07], [220, .06, .12, .06]], err: [[200, 0, .12, .07], [160, .1, .14, .06]] };
+  function sfx(type) {
+    if (!soundOn) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === 'suspended') actx.resume();
+      var t = actx.currentTime + .005;
+      (SFX[type] || []).forEach(function (x) {
+        var o = actx.createOscillator(), g = actx.createGain();
+        o.type = 'sine'; o.frequency.setValueAtTime(x[0], t + x[1]); o.frequency.exponentialRampToValueAtTime(x[0] * 1.12, t + x[1] + x[2]);
+        g.gain.setValueAtTime(0.0001, t + x[1]); g.gain.exponentialRampToValueAtTime(x[3], t + x[1] + .006); g.gain.exponentialRampToValueAtTime(0.0001, t + x[1] + x[2]);
+        o.connect(g); g.connect(actx.destination); o.start(t + x[1]); o.stop(t + x[1] + x[2] + .03);
+      });
+    } catch (e) {}
+  }
   function lastTempat() { return ls('lastTempat') || 'SeaBank'; }
   function tglId(d) { var p = d.split('-'); return +p[2] + ' ' + BULAN[+p[1] - 1]; }
   function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
@@ -709,6 +736,7 @@ if (typeof module !== 'undefined') module.exports = { parseText: parseText, pars
     }).catch(function (e) {
       loading(false);
       var m = e && e.message ? e.message : String(e);
+      sfx('err');
       if (/kode rahasia salah|belum dibuat/i.test(m)) { showSetup(m); return; }
       toast(/Failed to fetch|NetworkError|Load failed/i.test(m) ? 'Tidak ada koneksi. Menampilkan data terakhir.' : 'Gagal: ' + m);
       setText('inErr', m);
@@ -733,7 +761,7 @@ if (typeof module !== 'undefined') module.exports = { parseText: parseText, pars
       ls('bk_url', url); ls('bk_key', key);
       state = s; lastFetch = Date.now(); ls('bk_state', JSON.stringify(s)); ls('bk_time', String(lastFetch));
       $('setup').hidden = true; b.disabled = false; b.textContent = 'Masuk';
-      render(); animateIn('beranda'); toast('Tersambung ✓'); buzz();
+      render(); animateIn('beranda'); toast('Tersambung ✓'); buzz(); sfx('ok');
     }).catch(function (e) {
       b.disabled = false; b.textContent = 'Masuk';
       var m = e && e.message ? e.message : String(e);
@@ -741,7 +769,31 @@ if (typeof module !== 'undefined') module.exports = { parseText: parseText, pars
     });
   };
 
+  /* ---------- gerak bergaya iPhone (pegas) ---------- */
+  // Kurva pegas dihitung dari fisika (massa, kekakuan, redaman) lalu dipakai lewat easing linear().
+  function springCurve(stiffness, damping) {
+    var m = 1, w0 = Math.sqrt(stiffness / m), z = damping / (2 * Math.sqrt(stiffness * m));
+    var wd = w0 * Math.sqrt(Math.max(0, 1 - z * z));
+    function x(t) { return z < 1 ? 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t)) : 1 - Math.exp(-w0 * t) * (1 + w0 * t); }
+    var dur = 0; for (var t = 0; t < 4; t += 1 / 120) { if (Math.abs(x(t) - 1) > 0.0015) dur = t; }
+    dur = Math.max(0.3, dur + 0.02);
+    var pts = []; for (var i = 0; i <= 48; i++) pts.push(+x(dur * i / 48).toFixed(4));
+    pts[48] = 1;
+    return { ms: Math.round(dur * 1000), easing: 'linear(' + pts.join(', ') + ')' };
+  }
+  var hasLinear = !!(window.CSS && CSS.supports && CSS.supports('animation-timing-function', 'linear(0, 1)'));
+  function spring(k, d, fallback) { var s = springCurve(k, d); return hasLinear ? s : { ms: s.ms, easing: fallback }; }
+  var SP_PAGE = spring(210, 26, 'cubic-bezier(.25,1.1,.4,1)');   // halaman: sedikit memantul
+  var SP_BOUNCE = spring(320, 18, 'cubic-bezier(.34,1.56,.64,1)'); // ikon & tombol: lebih memantul
+  var SP_SHEET = spring(260, 26, 'cubic-bezier(.25,1.15,.4,1)');
+  document.documentElement.style.setProperty('--spring', SP_BOUNCE.easing);
+  document.documentElement.style.setProperty('--spring-ms', SP_BOUNCE.ms + 'ms');
+  document.documentElement.style.setProperty('--spring-page', SP_SHEET.easing);
+  document.documentElement.style.setProperty('--spring-page-ms', SP_SHEET.ms + 'ms');
+
   /* ---------- navigasi ---------- */
+  var ORDER = ['beranda', 'analitik', 'input', 'hutang', 'riwayat'];
+  var busy = null;
   function moveInd() {
     var btn = document.querySelector('nav.tabbar button.on'), ind = $('navInd'), nav = $('tabbar');
     if (!btn || btn.classList.contains('fab')) { ind.style.opacity = '0'; return; }
@@ -749,55 +801,127 @@ if (typeof module !== 'undefined') module.exports = { parseText: parseText, pars
     ind.style.opacity = '1';
     ind.style.transform = 'translateX(' + (bb.left - nb.left + (bb.width - 64) / 2) + 'px)';
   }
-  function animateIn(tab) {
-    var sec = $('tab-' + tab); if (!sec) return;
-    var targets = sec.querySelectorAll('.top, .page-title, .seg, .hero, .actions, .dg, .card, .insight');
-    sec.classList.remove('enter'); void sec.offsetWidth;
-    targets.forEach(function (n, i) { n.style.setProperty('--i', i); });
-    var grids = sec.querySelectorAll('.home-grid, .home-grid > .col, .ana-grid, .ana-grid > div, .two, .two > div');
-    sec.classList.add('enter');
-    grids.forEach(function (g) { g.classList.add('enter'); });
+  function staggerIn(sec, delay) {
+    if (!motion || !sec.animate) return;
+    var kids = sec.querySelectorAll('.top, .page-title, .seg, .hero, .actions, .dg, .card, .insight');
+    for (var i = 0; i < kids.length && i < 7; i++) {
+      kids[i].animate([{ opacity: 0, transform: 'translateY(16px) scale(.985)' }, { opacity: 1, transform: 'none' }],
+        { duration: SP_PAGE.ms + 120, delay: (delay || 0) + i * 45, easing: SP_PAGE.easing, fill: 'backwards' });
+    }
   }
-  function go(tab) {
+  function animateIn(tab) { var sec = $('tab-' + tab); if (sec) staggerIn(sec, 40); }
+  function finishBusy() {
+    if (!busy) return;
+    busy.anims.forEach(function (a) { try { a.cancel(); } catch (e) {} });
+    var o = busy.old; o.hidden = true; o.removeAttribute('style'); busy = null;
+  }
+  function go(tab, opts) {
     if (tab === current) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    finishBusy();
+    var from = current, dir = ORDER.indexOf(tab) > ORDER.indexOf(from) ? 1 : -1;
+    var oldSec = $('tab-' + from), newSec = $('tab-' + tab);
     current = tab;
     document.querySelectorAll('nav.tabbar button').forEach(function (x) { x.classList.toggle('on', x.dataset.tab === tab); });
-    ['beranda', 'analitik', 'input', 'hutang', 'riwayat'].forEach(function (t) { $('tab-' + t).hidden = t !== tab; });
-    window.scrollTo(0, 0);
-    moveInd(); animateIn(tab);
-    if (tab === 'analitik') drawCharts();
+    moveInd();
+    var navBtn = document.querySelector('nav.tabbar button[data-tab="' + tab + '"] svg');
+    if (motion && navBtn && navBtn.animate) navBtn.animate([{ transform: 'scale(1)' }, { transform: 'scale(.78)', offset: .3 }, { transform: 'scale(1)' }], { duration: SP_BOUNCE.ms, easing: SP_BOUNCE.easing });
+
+    if (!motion || !newSec.animate) {
+      oldSec.hidden = true; newSec.hidden = false; window.scrollTo(0, 0);
+    } else {
+      // gaya "push" iPhone: halaman lama bergeser sedikit & meredup, halaman baru masuk dari samping
+      var r = oldSec.getBoundingClientRect();
+      var pad = 16, skin = 'background:var(--bg);min-height:100vh;box-sizing:border-box;box-shadow:' + (dir > 0 ? '-14px' : '14px') + ' 0 32px -14px rgba(0,0,0,.28);';
+      oldSec.style.cssText = 'position:fixed;top:' + r.top + 'px;left:' + (r.left - pad) + 'px;width:' + (r.width + 2 * pad) + 'px;padding:0 ' + pad + 'px;z-index:' + (dir > 0 ? 1 : 3) + ';pointer-events:none;will-change:transform,opacity;' + (dir < 0 ? skin : '');
+      newSec.hidden = false; window.scrollTo(0, 0);
+      newSec.style.cssText = 'position:relative;margin:0 -' + pad + 'px;padding:0 ' + pad + 'px;z-index:' + (dir > 0 ? 3 : 1) + ';will-change:transform;' + (dir > 0 ? skin : '');
+      var W = Math.min(window.innerWidth, 560);
+      var aOld = oldSec.animate(dir > 0
+        ? [{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(' + (-W * 0.28) + 'px)', opacity: 0.35 }]
+        : [{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(' + W + 'px)', opacity: 1 }],
+        { duration: SP_PAGE.ms, easing: SP_PAGE.easing, fill: 'forwards' });
+      var aNew = newSec.animate(dir > 0
+        ? [{ transform: 'translateX(' + W + 'px)' }, { transform: 'translateX(0)' }]
+        : [{ transform: 'translateX(' + (-W * 0.28) + 'px)', opacity: 0.35 }, { transform: 'translateX(0)', opacity: 1 }],
+        { duration: SP_PAGE.ms, easing: SP_PAGE.easing });
+      busy = { old: oldSec, anims: [aOld, aNew] };
+      aNew.onfinish = function () { newSec.removeAttribute('style'); finishBusy(); };
+      staggerIn(newSec, 90);
+    }
+    if (tab === 'analitik') setTimeout(drawCharts, motion ? 120 : 0);
     if (tab === 'beranda') animateBars();
   }
-  document.querySelectorAll('nav.tabbar button').forEach(function (b) { b.onclick = function () { buzz(); go(b.dataset.tab); }; });
+  document.querySelectorAll('nav.tabbar button').forEach(function (b) { b.onclick = function () { buzz(); sfx(b.classList.contains('fab') ? 'pop' : 'nav'); go(b.dataset.tab); }; });
   document.querySelectorAll('[data-go]').forEach(function (b) {
     b.onclick = function () {
+      buzz(); sfx('tap');
       var g = b.dataset.go;
-      if (g === 'pindah') { go('input'); $('txt').value = 'pindah  ribu dari seabank ke dream gear'; $('txt').focus(); return; }
-      if (g === 'samakan') { go('input'); $('rekDetails').open = true; setTimeout(function () { $('cardRek').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 80); return; }
+      if (g === 'pindah') { go('input'); $('txt').value = 'pindah  ribu dari seabank ke dream gear'; return; }
+      if (g === 'samakan') { go('input'); $('rekDetails').open = true; setTimeout(function () { $('cardRek').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 450); return; }
       go(g);
     };
   });
   window.addEventListener('resize', moveInd);
+
+  // geser kiri/kanan untuk pindah tab
+  (function () {
+    var sx = 0, sy = 0, t0 = 0, ok = false;
+    document.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1 || !$('setup').hidden || $('sheet').classList.contains('on')) { ok = false; return; }
+      var tg = e.target;
+      ok = !(tg.closest && tg.closest('.pockets, .chips, canvas, input, textarea, select, .prev, nav.tabbar'));
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY; t0 = Date.now();
+    }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+      if (!ok) return; ok = false;
+      var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) < 70 || Math.abs(dy) > Math.abs(dx) * 0.6 || Date.now() - t0 > 600) return;
+      var i = ORDER.indexOf(current) + (dx < 0 ? 1 : -1);
+      if (ORDER[i] === 'input') i += (dx < 0 ? 1 : -1);
+      if (i >= 0 && i < ORDER.length) { buzz(); sfx('nav'); go(ORDER[i]); }
+    }, { passive: true });
+  })();
+
   $('seg').querySelectorAll('button').forEach(function (b) {
     b.onclick = function () {
+      buzz(); sfx('tap');
       mode = b.dataset.mode; $('seg').dataset.mode = mode;
       $('seg').querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); });
       drawCharts();
     };
   });
-  $('btnEye').onclick = function () { hidden = !hidden; ls('bk_hide', hidden ? '1' : '0'); $('eyeUse').setAttribute('href', hidden ? '#i-eyeoff' : '#i-eye'); render(); };
+  $('btnEye').onclick = function () { buzz(); sfx('tap'); hidden = !hidden; ls('bk_hide', hidden ? '1' : '0'); $('eyeUse').setAttribute('href', hidden ? '#i-eyeoff' : '#i-eye'); render(); };
   $('eyeUse').setAttribute('href', hidden ? '#i-eyeoff' : '#i-eye');
-  $('chips').querySelectorAll('button').forEach(function (b) { b.onclick = function () { var t = $('txt'); t.value = (t.value ? t.value + ', ' : '') + b.textContent; t.focus(); }; });
-  $('btnRefresh').onclick = function () { buzz(); refresh(); };
+  $('chips').querySelectorAll('button').forEach(function (b) { b.onclick = function () { sfx('tap'); var t = $('txt'); t.value = (t.value ? t.value + ', ' : '') + b.textContent; }; });
+  $('btnRefresh').onclick = function () { buzz(); sfx('tap'); refresh(); };
 
-  // lembar pengaturan
-  function sheet(on) { $('scrim').classList.toggle('on', on); $('sheet').classList.toggle('on', on); }
+  // lembar pengaturan (bisa diseret ke bawah untuk menutup)
+  function sheet(on) {
+    var s = $('sheet');
+    s.style.transition = ''; s.style.transform = '';
+    $('scrim').classList.toggle('on', on); s.classList.toggle('on', on);
+    if (on) sfx('pop');
+  }
+  (function () {
+    var s = $('sheet'), y0 = 0, dy = 0, drag = false;
+    s.addEventListener('touchstart', function (e) { if (s.scrollTop > 0) return; drag = true; y0 = e.touches[0].clientY; dy = 0; s.style.transition = 'none'; }, { passive: true });
+    s.addEventListener('touchmove', function (e) { if (!drag) return; dy = Math.max(0, e.touches[0].clientY - y0); s.style.transform = 'translateY(' + dy + 'px)'; }, { passive: true });
+    s.addEventListener('touchend', function () {
+      if (!drag) return; drag = false;
+      s.style.transition = 'transform var(--spring-page-ms) var(--spring-page)';
+      if (dy > 90) { s.style.transform = 'translateY(110%)'; setTimeout(function () { sheet(false); }, 220); }
+      else s.style.transform = 'translateY(0)';
+    });
+  })();
   $('btnSettings').onclick = function () {
+    buzz();
     var t = Number(ls('bk_time') || 0);
     setText('setUpd', t ? new Date(t).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—');
     setText('setUrl', cfg.url ? cfg.url.replace('https://script.google.com/macros/s/', '…/').slice(0, 26) + '…' : '—');
+    setText('btnSound', soundOn ? 'Nyala' : 'Mati');
     sheet(true);
   };
+  $('btnSound').onclick = function () { soundOn = !soundOn; ls('bk_sound', soundOn ? '1' : '0'); setText('btnSound', soundOn ? 'Nyala' : 'Mati'); buzz(); sfx('ok'); };
   $('scrim').onclick = function () { sheet(false); };
   $('btnReload').onclick = function () { sheet(false); refresh(); };
   $('btnLogout').onclick = function () {
@@ -887,7 +1011,7 @@ if (typeof module !== 'undefined') module.exports = { parseText: parseText, pars
       }
       var row = txRow(t);
       var del = el('button', 'xbtn', 'hapus');
-      del.onclick = function () { del.textContent = 'yakin?'; del.style.color = 'var(--bad)'; del.onclick = function () { call('deleteTransaksi', [t.id], function () { toast('Dihapus'); }).catch(function () {}); }; };
+      del.onclick = function () { del.textContent = 'yakin?'; del.style.color = 'var(--bad)'; del.onclick = function () { call('deleteTransaksi', [t.id], function () { toast('Dihapus'); sfx('del'); buzz(); }).catch(function () {}); }; };
       row.querySelector('.rt').appendChild(del);
       tl.appendChild(row);
     });
@@ -1031,8 +1155,8 @@ if (typeof module !== 'undefined') module.exports = { parseText: parseText, pars
     setText('inErr', '');
     pending = parseText($('txt').value, lastTempat());
     renderPreview();
-    if (!pending.length) setText('inErr', 'Tidak ada nominal yang terbaca. Coba tulis seperti: "makan 25 ribu dari cash".');
-    else buzz();
+    if (!pending.length) { setText('inErr', 'Tidak ada nominal yang terbaca. Coba tulis seperti: "makan 25 ribu dari cash".'); sfx('err'); }
+    else { buzz(); sfx('pop'); }
   };
   function sel(options, value) { var s = el('select'); options.forEach(function (o) { s.appendChild(new Option(o, o)); }); s.value = value; return s; }
   function renderPreview() {
@@ -1078,7 +1202,7 @@ if (typeof module !== 'undefined') module.exports = { parseText: parseText, pars
     call('addTransaksi', [pending], function () {
       if (first && first.sumber) ls('lastTempat', first.sumber);
       pending = []; renderPreview(); $('txt').value = ''; btn.disabled = false;
-      toast('Tersimpan ✓ Aset bersih ' + rp(state.netWorth)); buzz();
+      toast('Tersimpan ✓ Aset bersih ' + rp(state.netWorth)); buzz(); sfx('ok');
       go('beranda');
     }).catch(function () { btn.disabled = false; });
   };
@@ -1099,6 +1223,7 @@ if (typeof module !== 'undefined') module.exports = { parseText: parseText, pars
   var cached = ls('bk_state');
   if (cached) { try { state = JSON.parse(cached); lastFetch = Number(ls('bk_time') || 0); } catch (e) { state = null; } }
   requestAnimationFrame(function () { moveInd(); animateIn('beranda'); });
+  document.addEventListener('pointerdown', function (e) { var b = e.target.closest && e.target.closest('.act, .tx, .pocket, .xbtn, .btn'); if (b && motion && b.animate) b.animate([{ transform: 'scale(1)' }, { transform: 'scale(.96)', offset: .25 }, { transform: 'scale(1)' }], { duration: SP_BOUNCE.ms, easing: SP_BOUNCE.easing }); }, { passive: true });
   if (!cfg.url || !cfg.key) showSetup('');
   else { if (state) { render(); animateBars(); } refresh(); }
   if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(function () {});

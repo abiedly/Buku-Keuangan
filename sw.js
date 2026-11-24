@@ -1,5 +1,5 @@
 // Buku Keuangan — service worker: simpan tampilan agar cepat dibuka.
-const CACHE = 'bk-v1';
+const CACHE = 'bk-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon.svg', './apple-touch-icon.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener('activate', (e) => {
@@ -11,6 +11,10 @@ self.addEventListener('fetch', (e) => {
   if (r.method !== 'GET') return;
   const host = new URL(r.url).hostname;
   if (host.endsWith('script.google.com') || host.endsWith('googleusercontent.com')) return; // data selalu dari jaringan
+  if (r.mode === 'navigate') { // halaman: ambil versi terbaru dulu, cadangan dari cache
+    e.respondWith(fetch(r).then((res) => { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(r, copy)); return res; }).catch(() => caches.match(r).then((h) => h || caches.match('./index.html'))));
+    return;
+  }
   e.respondWith(caches.open(CACHE).then((c) => c.match(r).then((hit) => {
     const net = fetch(r).then((res) => { if (res && (res.ok || res.type === 'opaque')) c.put(r, res.clone()); return res; }).catch(() => hit);
     return hit || net;
