@@ -133,6 +133,12 @@
   @media (prefers-color-scheme: dark) { .tile { background: rgba(0,0,0,.14); } }
   .tile span { display: block; font-size: 11px; opacity: .75; }
   .tile b { font-size: 16px; font-weight: 800; }
+  .flow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .flow div:nth-child(3) { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; }
+  .flow div:nth-child(3) span { font-size: 12px; }
+  .flow div { background: var(--panel-2); border-radius: var(--r-md); padding: 11px 12px; min-width: 0; }
+  .flow span { display: block; font-size: 11px; color: var(--muted); }
+  .flow b { font-size: 14px; font-weight: 800; display: block; overflow: hidden; text-overflow: ellipsis; }
 
   /* pockets */
   .pockets { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -18px; padding: 2px 18px 4px; scrollbar-width: none; }
@@ -328,6 +334,15 @@
           <button class="act" data-go="hutang"><span class="sq"><svg class="i"><use href="#i-doc"/></svg></span>Hutang</button>
         </div>
 
+        <div class="card" id="cardFlow">
+          <div class="card-h"><h2><span class="ic"><svg class="i"><use href="#i-chart"/></svg></span>Arus uang</h2><span class="muted" style="font-size:12px">semua tempat</span></div>
+          <div class="flow">
+            <div><span>Keluar hari ini</span><b class="num" id="kHari">…</b></div>
+            <div><span>Keluar bulan ini</span><b class="num" id="kBulan">…</b></div>
+            <div><span>Masuk bulan ini</span><b class="num pos" id="mBulanHome">…</b></div>
+          </div>
+        </div>
+
         <div class="card">
           <div class="card-h"><h2><span class="ic"><svg class="i"><use href="#i-wallet"/></svg></span>Saldo per tempat</h2></div>
           <div class="pockets" id="saldoList">
@@ -346,8 +361,8 @@
           <div class="of" id="dgOf">dari target</div>
           <div class="track"><div id="dgBar"></div></div>
           <div class="tiles">
-            <div class="tile"><span>Keluar hari ini</span><b class="num" id="kHari">…</b></div>
-            <div class="tile"><span>Keluar bulan ini</span><b class="num" id="kBulan">…</b></div>
+            <div class="tile"><span>Target</span><b class="num">Rp35 jt</b></div>
+            <div class="tile"><span>Kurang</span><b class="num" id="dgRest">…</b></div>
           </div>
         </div>
 
@@ -980,6 +995,8 @@ if (typeof module !== 'undefined') module.exports = { parseText: parseText, pars
     $('dgBar').style.width = Math.max(p.pct, 1.5) + '%';
     countTo($('kHari'), state.keluarHariIni, rp);
     countTo($('kBulan'), state.keluarBulan, rp);
+    countTo($('mBulanHome'), state.masukBulan, rp);
+    setText('dgRest', hidden ? 'Rp•••••' : short(Math.max(0, DG_TARGET - p.v)));
     setText('kBulan2', rp(state.keluarBulan));
     setText('mBulan', rp(state.masukBulan));
     setText('greetSub', p.pct >= 100 ? 'Target Dream Gear tercapai. Luar biasa!' : 'Dream Gear ' + p.pct.toFixed(1).replace('.', ',') + '% menuju target. Sedikit demi sedikit.');
